@@ -7,6 +7,7 @@ use App\Jobs\Server\FinalizeServer;
 use App\Jobs\Server\InstallNginx;
 use App\Jobs\Server\InstallPHP;
 use App\Models\Server;
+use App\Server\ServerTypeFactory;
 use Illuminate\Support\Facades\Bus;
 
 class ServerObserver
@@ -16,12 +17,9 @@ class ServerObserver
      */
     public function created(Server $server): void
     {
-        $batch = Bus::batch([
-            new CreateServer(),
-            new InstallNginx(),
-            new InstallPHP(),
-            new FinalizeServer()
-        ])
+        $serverType = ServerTypeFactory::make($server);
+
+        $batch = Bus::batch($serverType->jobs())
             ->dispatch();
 
         $server->update([
