@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Server\States\Complete;
+use App\Server\States\Failed;
+use App\Server\States\InProgress;
+use App\Server\States\Pending;
 use App\Server\States\ServerTaskState;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +21,26 @@ class ServerTask extends Model
     ];
 
     protected $guarded = false;
+
+    public function isPending(): bool
+    {
+        return $this->state->equals(Pending::class);
+    }
+
+    public function isInProgress(): bool
+    {
+        return $this->state->equals(InProgress::class);
+    }
+
+    public function isComplete(): bool
+    {
+        return $this->state->equals(Complete::class);
+    }
+
+    public function isFailed(): bool
+    {
+        return $this->state->equals(Failed::class);
+    }
 
     public function next()
     {
