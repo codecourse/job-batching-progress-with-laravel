@@ -27,6 +27,6 @@ class InstallNginx implements ShouldQueue
      */
     public function handle(): void
     {
-        sleep(2);
+        sleep(5);
     }
 }

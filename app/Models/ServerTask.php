@@ -18,6 +18,13 @@ class ServerTask extends Model
 
     protected $guarded = false;
 
+    public function next()
+    {
+        return $this->whereBelongsTo($this->server)
+            ->where('order', '>', $this->order)
+            ->first();
+    }
+
     public function server()
     {
         return $this->belongsTo(Server::class);
