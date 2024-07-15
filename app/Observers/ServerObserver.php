@@ -8,6 +8,7 @@ use App\Jobs\Server\InstallNginx;
 use App\Jobs\Server\InstallPHP;
 use App\Models\Server;
 use App\Server\ServerTypeFactory;
+use App\Server\States\InProgress;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 
@@ -23,6 +24,9 @@ class ServerObserver
         $server->tasks()->saveMany($serverType->tasks());
 
         $batch = Bus::batch($serverType->jobs())
+            ->before(function (Batch $batch) use ($server) {
+                $server->tasks()->first()->state->transitionTo(InProgress::class);
+            })
             ->progress(function (Batch $batch) {
                 //
             })
