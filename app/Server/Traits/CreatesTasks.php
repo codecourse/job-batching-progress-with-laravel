@@ -12,7 +12,8 @@ trait CreatesTasks
             $serverTask = ServerTask::make([
                 'order' => $order,
                 'job' => get_class($task),
-                //
+                'title' => $task->title(),
+                'description' => $task->description(),
             ]);
 
             $serverTask->server()->associate($this->server);

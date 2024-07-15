@@ -2,6 +2,8 @@
 
 namespace App\Jobs\Server;
 
+use App\Jobs\Server\Interfaces\ServerJob;
+use App\Models\Server;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class CreateServer implements ShouldQueue
+class CreateServer implements ShouldQueue, ServerJob
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     use Batchable;
@@ -17,7 +19,7 @@ class CreateServer implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(protected Server $server)
     {
         //
     }
@@ -28,5 +30,15 @@ class CreateServer implements ShouldQueue
     public function handle(): void
     {
         sleep(5);
+    }
+
+    public function title(): string
+    {
+        return 'Create server #' . $this->server->id;
+    }
+
+    public function description(): string
+    {
+        return 'Creating your server';
     }
 }
