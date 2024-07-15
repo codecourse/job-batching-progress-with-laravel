@@ -13,6 +13,8 @@ class CreateServer extends Component
         $server = Server::create([
             'type' => 'app'
         ]);
+
+        return redirect()->route('servers.show', $server);
     }
 
     #[Layout('layouts.app')]
