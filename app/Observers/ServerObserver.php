@@ -20,6 +20,8 @@ class ServerObserver
     {
         $serverType = ServerTypeFactory::make($server);
 
+        $server->tasks()->saveMany($serverType->tasks());
+
         $batch = Bus::batch($serverType->jobs())
             ->progress(function (Batch $batch) {
                 //

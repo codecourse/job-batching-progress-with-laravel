@@ -13,4 +13,9 @@ class Server extends Model
     use HasFactory;
 
     protected $guarded = false;
+
+    public function tasks()
+    {
+        return $this->hasMany(ServerTask::class);
+    }
 }
