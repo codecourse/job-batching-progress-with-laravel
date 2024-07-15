@@ -30,8 +30,8 @@ class InstallNginx implements ShouldQueue, ServerJob
      */
     public function handle(): void
     {
+        throw new \Exception('Failed');
         sleep(3);
-        //throw new \Exception('Failed');
     }
 
     public function middleware(): array

@@ -26,6 +26,8 @@ class ShowServer extends Component
 
         $batch->cancel();
 
+        $this->server->delete();
+
         return redirect()->route('servers.create');
     }
 
