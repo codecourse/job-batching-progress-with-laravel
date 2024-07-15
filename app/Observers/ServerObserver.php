@@ -43,6 +43,14 @@ class ServerObserver
                     ->state
                     ->transitionTo(Failed::class);
             })
+            ->then(function (Batch $batch) use ($server) {
+                $server->update([
+                    'batch_id' => null,
+                    'provisioned_at' => now()
+                ]);
+
+                $server->tasks()->delete();
+            })
             ->dispatch();
 
         $server->update([
