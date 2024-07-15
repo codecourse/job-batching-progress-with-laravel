@@ -8,6 +8,7 @@ use App\Jobs\Server\InstallNginx;
 use App\Jobs\Server\InstallPHP;
 use App\Models\Server;
 use App\Server\ServerTypeFactory;
+use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 
 class ServerObserver
@@ -20,6 +21,9 @@ class ServerObserver
         $serverType = ServerTypeFactory::make($server);
 
         $batch = Bus::batch($serverType->jobs())
+            ->progress(function (Batch $batch) {
+                //
+            })
             ->dispatch();
 
         $server->update([
