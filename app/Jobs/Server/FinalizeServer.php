@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\SkipIfBatchCancelled;
 use Illuminate\Queue\SerializesModels;
 
 class FinalizeServer implements ShouldQueue, ServerJob
@@ -29,7 +30,12 @@ class FinalizeServer implements ShouldQueue, ServerJob
      */
     public function handle(): void
     {
-        sleep(5);
+        sleep(3);
+    }
+
+    public function middleware(): array
+    {
+        return [new SkipIfBatchCancelled()];
     }
 
     public function title(): string

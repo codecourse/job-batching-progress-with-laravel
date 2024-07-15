@@ -51,10 +51,20 @@ class ServerObserver
 
                 $server->tasks()->delete();
             })
+            ->finally(function (Batch $batch) use ($server) {
+                if ($batch->cancelled() && $batch->failedJobs === 0) {
+                    $server->delete();
+                }
+            })
             ->dispatch();
 
         $server->update([
             'batch_id' => $batch->id,
         ]);
+    }
+
+    public function deleting(Server $server)
+    {
+        $server->tasks()->delete();
     }
 }
